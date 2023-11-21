@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page Carte</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid #000;
+            cursor: grab;
+        }
+
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        button {
+            margin: 5px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div>
+        <button onclick="window.location.href='../'">Retour</button>
+        <button onmousedown="startMoving('right')" onmouseup="stopMoving()">Right</button>
+        <button onmousedown="startMoving('left')" onmouseup="stopMoving()">Left</button>
+        <button onmousedown="startMoving('down')" onmouseup="stopMoving()">Down</button>
+        <button onmousedown="startMoving('up')" onmouseup="stopMoving()">Up</button>
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="centrer()">Centrer</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+    </div>
+</body>
+
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var imageObj = new Image();
+    var isDragging = false;
+    var startCoords = { x: 0, y: 0 };
+    var continuousMove = false;
+    var moveDirection;
+
+    imageObj.onload = function () {
+        context.drawImage(imageObj, 0, 0);
+    };
+
+    imageObj.src = 'media/antarctique.jpg';
+
+    canvas.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        startCoords = { x: e.clientX, y: e.clientY };
+        canvas.style.cursor = 'grabbing';
+    });
+
+    canvas.addEventListener('mouseup', function () {
+        isDragging = false;
+        canvas.style.cursor = 'grab';
+    });
+
+    canvas.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+            var dx = e.clientX - startCoords.x;
+            var dy = e.clientY - startCoords.y;
+            startCoords = { x: e.clientX, y: e.clientY };
+            context.translate(dx, dy);
+            context.drawImage(imageObj, 0, 0);
+        }
+    });
+
+    canvas.addEventListener('wheel', function (e) {
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    });
+
+    function startMoving(direction) {
+        continuousMove = true;
+        moveDirection = direction;
+        move();
+    }
+
+    function stopMoving() {
+        continuousMove = false;
+    }
+
+    function move() {
+        if (continuousMove) {
+            switch (moveDirection) {
+                case 'right':
+                    context.translate(10, 0);
+                    break;
+                case 'left':
+                    context.translate(-10, 0);
+                    break;
+                case 'down':
+                    context.translate(0, 10);
+                    break;
+                case 'up':
+                    context.translate(0, -10);
+                    break;
+            }
+            context.drawImage(imageObj, 0, 0);
+            requestAnimationFrame(move);
+        }
+    }
+    var scale=1;
+    function zoomIn() {
+        scale=scale+0.1;
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.scale(scale, scale);
+        context.drawImage(imageObj, 0, 0);
+    }
+
+    function zoomOut() {
+        scale=scale-0.1;
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.scale(scale, scale);
+        context.drawImage(imageObj, 0, 0);
+    }
+
+    function centrer() {
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.drawImage(imageObj, 0, 0);
+    }
+    //ajouter un point si on clique dessus ça affiche une fenetre avec les infos
+    
+    function addPoint(x,y){
+        context.beginPath();
+        context.arc(x, y, 5, 0, 2 * Math.PI);
+        context.stroke();
+    }
+    canvas.addEventListener('click', function (e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        addPoint(x,y);
+    });
+    //mettre une alert si on clique sur un point précis
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+    }
+    canvas.addEventListener('click', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        alert(message);
+    }, false);
+    function addPoint(x,y){
+        context.beginPath();
+        context.arc(x, y, 5, 0, 2 * Math.PI);
+        context.stroke();
+    }
+    canvas.addEventListener('click', function (e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        addPoint(x,y);
+    });
+</script>
+
+</html>
