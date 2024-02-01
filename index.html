@@ -1,255 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Localhost Page</title>
-    <META charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage de points avec CesiumJS</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.84/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.84/Build/Cesium/Widgets/widgets.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        
-        p {
-            color: #666;
-            line-height: 1.5;
-        }
-        .header{
-          background-color: grey;
-          color: white;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-          text-align: center!important;
-        }
-        .header a{
-          color: white;
-          text-decoration: none;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-        }
-        @media screen and (max-width: 1000px) {
-            .container {
-                width: 100%;
-            }
-            body{
-              font-size: 4em;
-            }
-            /* mettre un menu déroulant */
-            .header{
-              display: block;
-              background-color: grey;
-              color: white;
-              padding: 10px;
-              margin: 10px;
-              border-radius: 5px;
-              font-size:large;
-              text-align: center!important;
-            }
-            .header a{
-              color: white;
-              text-decoration: none;
-              padding: 25px;
-              margin: 25px;
-              border-radius: 5px;
-              font-size:large;
-            }
-        }
-        .dropbtn{
-          background-color: grey;
-          color: white;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-          text-align: center!important;
-          border:#333;
-        }
-        .dropbtn:hover{
-          background-color: #333;
-          color: white;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-          text-align: center!important;
-          border:#333;
-        }
-        .dropbtn:focus{
-          background-color: #333;
-          color: white;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-          text-align: center!important;
-          border:#333;
-        }
-        .dropbtn:active{
-          background-color: #333;
-          color: white;
-          padding: 10px;
-          margin: 10px;
-          border-radius: 5px;
-          font-size:large;
-          text-align: center!important;
-          border:#333;
-        }
-        @media screen and (min-width: 1000px){
-          #header{
-            display: inline-block!important;
-          }
-          #br{
-            display: none!important;
-          }
-          .dropbtn{
-            display: none!important;
-          }
-        }
-        #modal_about{
-          display: none;
-          position: fixed!important;
-          z-index: 1;
-          padding-top: 100px;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgb(0,0,0);
-          background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content{
-          background-color: #fefefe;
-          margin: auto;
-          padding: 20px;
-          border: 1px solid #888;
-          width: 80%;
-        }
-        .close{
-          color: #aaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
-          cursor: pointer;
-        }
-        #modal_about_body{
-          display: none;
-          position: fixed!important;
-          z-index: 1;
-          padding-top: 100px;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgb(0,0,0);
-          background-color: rgba(0,0,0,0.4);
-        }
-        @media screen and (max-width: 1000px){
-          .modal-content{
+        #cesiumContainer {
             width: 100%;
-          }
-          
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-  <center>
-    <div class="header">
-      <button class="dropbtn">Menu</button>
-      <div id="contenu">
-        <a href="#home">Home</a><div id="br"><br></div>
-        <a href="carte">Carte</a><div id="br"><br></div>
-        <a href="#contact">Contact</a><div id="br"><br></div>
-        <a href="#about" id="about">About</a><div id="br"><br></div>
-      </div>
-    </div>
-  </center>
-    <div class="container">
-        <h1>Exposition de l'IPSL</h1>
-        <p>Bienvenue sur le site de présentation de l'exposition sur les archives polaires</p>
-        <a>Vous pourvez cliquer sur le menu déroulant ci dessus pour accéder aux pages</a>
-        <p>Salut</p>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    </div>
-    <div class="modal_about" style="display:none">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-      </div>
-    </div>
-  <script>
-    var btn = document.querySelector(".dropbtn");
-    var contenu = document.querySelector("#contenu");
-    if (window.matchMedia("(max-width: 1000px)").matches) {
-      contenu.style.display = "none";
-      btn.style.display = "block!important";
-      btn.addEventListener("click", function(){
-        if (contenu.style.display == "none") {
-          contenu.style.display = "block";
-        } else {
-          contenu.style.display = "none";
-        }
-      });
-    }
-    var modal = document.querySelector(".modal_about");
-    var span = document.querySelector(".close");
-    var about = document.querySelector("#about");
-    function afficher_about(){
-      modal.style.display = "block";
-      modal.style.position = "fixed";
-      modal.style.zIndex = "1";
-      modal.style.left= "0";
-      modal.style.top = "0";
-      //mettre l'arrière plan en gris
-      modal.style.width = "80%";
-      modal.style.height = "80%";
-      modal.style.overflow = "auto";
-      modal.style.backgroundColor = "rgb(0,0,0)";
-      modal.style.backgroundColor = "rgba(0,0,0,0.4)";
-      //mettre le contenu en blanc
-      modal.style.margin = "auto";
-      modal.style.padding = "100px";
-      modal.style.border = "1px solid #888";
-      modal.style.width = "100%";
-      modal.style.height = "100%";
-      modal.style.overflow = "auto";
-      modal.style.backgroundColor = "white!important";
-      //si on clique en dehors de la fenêtre, elle se ferme
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
-    }
-    about.addEventListener("click", afficher_about);
-    //si #about à la fin  de l'url, on affiche la fenêtre
-    if (window.location.href.indexOf("#about") > -1) {
-      afficher_about();
-    }
-    span.addEventListener("click", function(){
-      modal.style.display = "none";
-      document.getElementsById("modal_about_body").style.display = "none";
-    });
-  </script>
+    <div id="cesiumContainer"></div>
+    <script>
+        // Utilisation du token Cesium Ion
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2OGQ1NGRiNC1hZmJjLTQ2NDItOTVlNy02OWVjNDhhZmQ0YTciLCJpZCI6MTg3NzQwLCJpYXQiOjE3MDQzMTE2OTZ9.JZPn9yWU6Mavs4d91wO44Guw5T4ItLpFfhA6Bp-c0Kc';
+
+        // Initialisation de CesiumJS
+        const viewer = new Cesium.Viewer('cesiumContainer');
+
+
+</script>
 </body>
 </html>
