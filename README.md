@@ -1,2 +1,2 @@
 # Site
-To visit the site click on this [link](https://pentascript.github.io/html/index.html).
+To visit the site click on this [link](https://euciyde.github.io/html/index.html).
